@@ -123,17 +123,14 @@ public class ImageService {
 			String title,
 			String description ) throws BaringoApiException {
 
-		RequestBody body = RequestBody.create(
-				MediaType.parse("text/plain"), base64String );
-
 		Call<ImgurResponseWrapper<Image>> call =
-				client.getApi().uploadbase64Image(
+				client.getApi().uploadBase64Image(
 						albumId,
 						"base64",
 						title,
 						fileName,
 						description,
-						body );
+						base64String );
 
 		try {
 			Response<ImgurResponseWrapper<Image>> res = call.execute();

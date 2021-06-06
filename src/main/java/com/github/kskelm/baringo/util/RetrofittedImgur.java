@@ -476,14 +476,15 @@ public interface RetrofittedImgur {
 			@Query("description") String description,
 			@Body RequestBody imageUrl );
 
+	@FormUrlEncoded
 	@POST("/3/upload")
-	Call<ImgurResponseWrapper<Image>> uploadbase64Image(
-			@Query("album") String albumName, // id or delete hash
-			@Query("type") String uploadType,  // use "base64"
-			@Query("title") String title,
-			@Query("name") String fileName,
-			@Query("description") String description,
-			@Body RequestBody imageBase64String );
+	Call<ImgurResponseWrapper<Image>> uploadBase64Image(
+			@Field("album") String albumName, // id or delete hash
+			@Field("type") String uploadType,  // use "base64"
+			@Field("title") String title,
+			@Field("name") String fileName,
+			@Field("description") String description,
+			@Field("image") String imageBase64String );
 
 	// looking for download? it doesn't use the https://api.imgur.com/
 	// base path used everywhere else, so we just used OkHttp directly.
