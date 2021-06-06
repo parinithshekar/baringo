@@ -1,9 +1,11 @@
 *.class
+*.iml
 
 .classpath
 bin
 target
 javadoc
+.idea
 .settings
 .project
 .target

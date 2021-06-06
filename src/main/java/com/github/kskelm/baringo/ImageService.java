@@ -105,6 +105,48 @@ public class ImageService {
 	}
 
 	/**
+	 * Upload an image to Imgur by giving the base64 string.
+	 * <p>
+	 * <b>ACCESS: ANONYMOUS</b> or <b>AUTHENTICATED USER</b>
+	 * @param base64String the full URL of the image.
+	 * @param fileName original of the file being uploaded (pick something)
+	 * @param albumId the name of the album, the album's deleteHash if it's anonymous, or null if none
+	 * @param title title of image or null if none
+	 * @param description description of image or null if none
+	 * @return The new Image object.  If this is anonymous, <i>hang on to the delete hash</i> or you won't be able to manipulate it in the future!
+	 * @throws BaringoApiException something terrible happened to Stuart!
+	 */
+	public Image uploadBase64Image(
+			String base64String,
+			String fileName,
+			String albumId,
+			String title,
+			String description ) throws BaringoApiException {
+
+		RequestBody body = RequestBody.create(
+				MediaType.parse("text/plain"), base64String );
+
+		Call<ImgurResponseWrapper<Image>> call =
+				client.getApi().uploadbase64Image(
+						albumId,
+						"base64",
+						title,
+						fileName,
+						description,
+						body );
+
+		try {
+			Response<ImgurResponseWrapper<Image>> res = call.execute();
+			ImgurResponseWrapper<Image> out = res.body();
+
+			client.throwOnWrapperError( res );
+			return out.getData();
+		} catch (IOException e) {
+			throw new BaringoApiException( e.getMessage() );
+		} // try-catch
+	}
+
+	/**
 	 * Upload an image to Imgur as a stream from the local filesystem.
 	 * Use a buffered stream wherever possible!
 	 * <p>
